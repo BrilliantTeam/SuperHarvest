@@ -1,6 +1,6 @@
 # SuperHarvest
 連鎖伐木，挖礦和採收農田
-Tested Versions: 1.17↑
+遊戲版本: 1.17↑
 
 # 指令
 1. /sh 開啟所有功能，再輸入一次 /sh 則會關閉
