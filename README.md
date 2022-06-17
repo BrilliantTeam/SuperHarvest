@@ -1,5 +1,5 @@
 # SuperHarvest
-Fast harvest for farming, logging and mining!
+連鎖伐木，挖礦和採收農田
 Tested Versions: 1.17↑
 
 # 指令
