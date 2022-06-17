@@ -1,0 +1,17 @@
+name: SuperHarvest
+main: rd.dru.SuperHarvest
+version: 0.1
+description: "break ores, trees, farms break fast and instanly!"
+author: Dru_TNT
+api-version: 1.13
+commands:
+  superharvest:
+    description: "superharvest management command"
+    aliases: [sh]
+permissions:
+  superharvest.use:
+     description: Allows you to apply super harvest
+     default: true
+  superharvest.admin:
+     description: Allows you to use admin cmd
+     default: op
