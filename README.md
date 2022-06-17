@@ -1,4 +1,4 @@
-# ⛏SuperHarvest | 連鎖採集插件
+# SuperHarvest | 連鎖採集插件
 連鎖伐木，挖礦和採收農田<br>
 遊戲版本: 1.17↑
 
