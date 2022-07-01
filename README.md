@@ -18,5 +18,8 @@ This project is under GPLv3.
 ```
 superharvest.use 使用SuperHarvest的權限
 superharvest.admin 使用管理員指令的權限
+superharvest.farming - 使用快速收取農作物的權限
+superharvest.mining - 使用快速挖礦的權限
+superharvest.logging - 使用快速伐木的權限
 ```
 [![fe37780d8c2c572f.gif](https://i.postimg.cc/RhwwNszn/fe37780d8c2c572f.gif)](https://postimg.cc/8fP7Ybc1)
