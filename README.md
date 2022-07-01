@@ -19,4 +19,4 @@ This project is under GPLv3.
 superharvest.use 使用SuperHarvest的權限
 superharvest.admin 使用管理員指令的權限
 ```
-[![fe37780d8c2c572f.gif](https://cdn.discordapp.com/attachments/992386006865162270/992398444939464824/fe37780d8c2c572f.gif)
+[![fe37780d8c2c572f.gif](https://i.postimg.cc/RhwwNszn/fe37780d8c2c572f.gif)](https://postimg.cc/8fP7Ybc1)
