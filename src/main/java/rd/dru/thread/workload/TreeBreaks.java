@@ -30,6 +30,7 @@ public class TreeBreaks implements Workload {
 		this.player = player;
 		this.type = loc.getType();
 		chains(loc);
+	
 	}
 	
 	@Override
@@ -45,7 +46,8 @@ public class TreeBreaks implements Workload {
 				b.getWorld().playSound(b.getLocation(), Sound.BLOCK_WOOL_BREAK, 1, 1);		
 				b.getWorld().spawnParticle(Particle.BLOCK_CRACK, b.getLocation().add(0.5,0.5,0.5), 25, 1, 0.1,
 						0.1, 0.1, type.createBlockData());
-			} 			
+			} else 
+				return cancel();
 		} else for(int i=0;!leaves.isEmpty()&&i<6;i++) {
 			b = leaves.poll();
 			b.breakNaturally();
@@ -61,8 +63,13 @@ public class TreeBreaks implements Workload {
 		leaves.addAll(Helper.getNear(b).stream().filter(nb->isLeaves(nb)&&!leaves.contains(nb)).collect(Collectors.toList()));
 	}
 	
+	private boolean cancel() {
+		SuperHarvest.thread.cach.removeAll(going);
+		return true;
+	}
+	
 	private void chains(Block b) {
-		
+		SuperHarvest.thread.cach.remove(b);
 		Helper.getNear(b).stream().forEach(nb->{
 			if(isLeaves(nb)&&!leaves.contains(nb)) {
 				leaves.add(nb);

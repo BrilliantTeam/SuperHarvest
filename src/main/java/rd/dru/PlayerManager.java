@@ -26,6 +26,7 @@ public class PlayerManager {
 	 * @return true if the player should trigger this harvest
 	 */
 	public static boolean isEnable(Player p,OptionType type) {
+//		return true;
 		return !p.hasMetadata("disable-"+type.toString())&&p.hasPermission("superharvest."+type.toString().toLowerCase());
 	}
 	

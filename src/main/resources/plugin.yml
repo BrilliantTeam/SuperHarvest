@@ -12,6 +12,15 @@ permissions:
   superharvest.use:
      description: Allows you to apply super harvest
      default: true
+  superharvest.mining:
+     description: Allows you to apply fast mining
+     default: true
+  superharvest.farming:
+     description: Allows you to apply fast farming
+     default: true
+  superharvest.logging:
+     description: Allows you to apply fast logging
+     default: true
   superharvest.admin:
      description: Allows you to use admin cmd
      default: op

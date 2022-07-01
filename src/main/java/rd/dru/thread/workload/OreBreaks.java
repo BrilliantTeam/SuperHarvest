@@ -25,6 +25,7 @@ public class OreBreaks implements Workload {
 	
 
 	Deque<Block> going = new ArrayDeque<>();
+//	Array<Block> logs = new ArrayDeque<>();
 	Material type;
 	Player player;
 	
@@ -38,7 +39,7 @@ public class OreBreaks implements Workload {
 	@Override
 	public boolean compute() {
 		if(!player.isOnline()||player==null||going.isEmpty())
-			return true;
+			return cancel();
 		
 			Block b = going.poll();
 			if(b.getType().equals(type)&&player.breakBlock(b)&&isPickaxe(player.getInventory().getItemInMainHand())) {
@@ -46,16 +47,26 @@ public class OreBreaks implements Workload {
 				b.getWorld().playSound(b.getLocation(), Sound.BLOCK_STONE_BREAK, 1, 1);		
 				b.getWorld().spawnParticle(Particle.BLOCK_CRACK, b.getLocation().add(0.5,0.5,0.5), 25, 1, 0.1,
 						0.1, 0.1, type.createBlockData());
-			} 
+			} else
+				return cancel();
+			
+				
 		
 		return going.isEmpty();
 	}
+
+	private boolean cancel() {
+		SuperHarvest.thread.cach.removeAll(going);
+		return true;
+	}
 	
 	private void chains(Block b) {
+		SuperHarvest.thread.cach.remove(b);
 		List<Block> sels = Helper.getNear(b).stream().filter(w->w.getType().equals(type)&&!going.contains(w)).collect(Collectors.toList());
 		going.addAll(sels);
 
 		SuperHarvest.thread.cach.addAll(sels);
+		
 	}
 	
 	private static boolean isPickaxe(ItemStack item) {

@@ -43,16 +43,26 @@ public class CropBreaks implements Workload{
 			Block b = going.poll().getRelative(BlockFace.UP);
 			b.getWorld().spawnParticle(Particle.BLOCK_CRACK, b.getLocation().add(0.5,0.5,0.5), 100, 0.1, 0.1,
 					0.1, 0.1, b.getType().createBlockData());
-			if(canHarvest(b)&&player.breakBlock(b)&&isHoe(player.getInventory().getItemInMainHand())){
-				b.getWorld().playSound(b.getLocation(), Sound.BLOCK_CROP_BREAK, 1, 1);		
-				
-				chains(b.getRelative(BlockFace.DOWN));
-			}
+			
 		
+			if(canHarvest(b)) {
+				if(player.breakBlock(b)&&isHoe(player.getInventory().getItemInMainHand())) {
+					b.getWorld().playSound(b.getLocation(), Sound.BLOCK_CROP_BREAK, 1, 1);		
+					chains(b.getRelative(BlockFace.DOWN));
+				} else 
+					return cancel();
+			
+			}
 		return going.isEmpty();
 	}
 	
+	private boolean cancel() {
+		SuperHarvest.thread.cach.removeAll(going);
+		return true;
+	}
+	
 	private void chains(Block b) {
+		SuperHarvest.thread.cach.remove(b);
 		List<Block> sels = Helper.getNear(b).stream().filter(w->{
 			if(w.getType().equals(Material.FARMLAND)&&!lands.contains(w)) {
 				lands.add(w);
