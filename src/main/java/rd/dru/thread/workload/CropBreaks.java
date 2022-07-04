@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 
 import rd.dru.Helper;
 import rd.dru.SuperHarvest;
+import rd.dru.nms.NMSHandler.NSound;
 import rd.dru.thread.Workload;
 
 /**
@@ -41,13 +42,16 @@ public class CropBreaks implements Workload{
 			return true;
 
 			Block b = going.poll().getRelative(BlockFace.UP);
-			b.getWorld().spawnParticle(Particle.BLOCK_CRACK, b.getLocation().add(0.5,0.5,0.5), 100, 0.1, 0.1,
-					0.1, 0.1, b.getType().createBlockData());
+			SuperHarvest.nms.crackCrop(b, b.getType());
+//			b.getWorld().spawnParticle(Particle.BLOCK_CRACK, b.getLocation().add(0.5,0.5,0.5), 100, 0.1, 0.1,
+//					0.1, 0.1, b.getType().createBlockData());
 			
 		
 			if(canHarvest(b)) {
-				if(player.breakBlock(b)&&isHoe(player.getInventory().getItemInMainHand())) {
-					b.getWorld().playSound(b.getLocation(), Sound.BLOCK_CROP_BREAK, 1, 1);		
+				if(SuperHarvest.nms.breakBlock(player, b)&&isHoe(SuperHarvest.nms.getItemInHand(player))) {
+					SuperHarvest.nms.playSound(b, NSound.Farm);
+					
+//					b.getWorld().playSound(b.getLocation(), Sound.BLOCK_CROP_BREAK, 1, 1);		
 					chains(b.getRelative(BlockFace.DOWN));
 				} else 
 					return cancel();
@@ -64,10 +68,11 @@ public class CropBreaks implements Workload{
 	private void chains(Block b) {
 		SuperHarvest.thread.cach.remove(b);
 		List<Block> sels = Helper.getNear(b).stream().filter(w->{
-			if(w.getType().equals(Material.FARMLAND)&&!lands.contains(w)) {
+			if(SuperHarvest.nms.isFarmLnad(w)&&!lands.contains(w)) {
 				lands.add(w);
 				if(lands.size()<64)
 					return true;
+				
 			}
 			return false;
 		}).collect(Collectors.toList());
@@ -77,10 +82,9 @@ public class CropBreaks implements Workload{
 	}
 	
 	private boolean canHarvest(Block b) {
-		if(!(b.getBlockData() instanceof Ageable))
-			return false;
-		Ageable age = (Ageable)b.getBlockData();
-		return age.getAge()== age.getMaximumAge();
+//		if(!(SuperHarvest.nms.isCrop(b)))
+//			return false;
+		return SuperHarvest.nms.canCropHarvest(b);
 	}
 	
 	private boolean isHoe(ItemStack item) {

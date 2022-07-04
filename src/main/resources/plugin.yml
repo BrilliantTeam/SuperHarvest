@@ -1,6 +1,6 @@
 name: SuperHarvest
 main: rd.dru.SuperHarvest
-version: 0.1
+version: 1.1.1
 description: "break ores, trees, farms break fast and instanly!"
 author: Dru_TNT
 api-version: 1.13

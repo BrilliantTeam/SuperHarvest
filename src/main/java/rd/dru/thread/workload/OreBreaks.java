@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 
 import rd.dru.Helper;
 import rd.dru.SuperHarvest;
+import rd.dru.nms.NMSHandler.NSound;
 import rd.dru.thread.Workload;
 
 /**
@@ -42,11 +43,13 @@ public class OreBreaks implements Workload {
 			return cancel();
 		
 			Block b = going.poll();
-			if(b.getType().equals(type)&&player.breakBlock(b)&&isPickaxe(player.getInventory().getItemInMainHand())) {
+			if(b.getType().equals(type)&&SuperHarvest.nms.breakBlock(player, b)&&isPickaxe(SuperHarvest.nms.getItemInHand(player))) {
 				chains(b);
-				b.getWorld().playSound(b.getLocation(), Sound.BLOCK_STONE_BREAK, 1, 1);		
-				b.getWorld().spawnParticle(Particle.BLOCK_CRACK, b.getLocation().add(0.5,0.5,0.5), 25, 1, 0.1,
-						0.1, 0.1, type.createBlockData());
+				SuperHarvest.nms.playSound(b, NSound.Ore);
+				SuperHarvest.nms.crackBlock(b, type);
+//				b.getWorld().playSound(b.getLocation(), Sound.BLOCK_STONE_BREAK, 1, 1);		
+//				b.getWorld().spawnParticle(Particle.BLOCK_CRACK, b.getLocation().add(0.5,0.5,0.5), 25, 1, 0.1,
+//						0.1, 0.1, type.createBlockData());
 			} else
 				return cancel();
 			

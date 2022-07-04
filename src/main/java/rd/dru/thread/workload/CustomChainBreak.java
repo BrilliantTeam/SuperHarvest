@@ -36,7 +36,7 @@ public class CustomChainBreak implements Workload{
 			return true;
 		
 			Block b = going.poll();
-			if(b.getType().equals(type)&&player.breakBlock(b))
+			if(b.getType().equals(type)&&SuperHarvest.nms.breakBlock(player, b))
 				chains(b);
 		
 		return going.isEmpty();

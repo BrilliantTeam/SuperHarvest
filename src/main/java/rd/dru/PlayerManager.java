@@ -33,7 +33,7 @@ public class PlayerManager {
 	public static boolean toggle(Player p) {
 		boolean on = p.hasMetadata("disable-"+OptionType.Farming);
 		Config c = SuperHarvest.getSuperConfig();
-		p.sendMessage(""+ChatColor.GREEN+c.toggleAll.replace("{0}", (on ?  c.enable: c.disable)));
+		p.sendMessage(""+ChatColor.GREEN+Config.color(c.toggleAll.replace("{0}", (on ?  c.enable: c.disable))));
 		
 		
 		set(p, OptionType.Farming, on);
@@ -53,7 +53,7 @@ public class PlayerManager {
 	public static boolean toggle(Player p, OptionType type) {
 		boolean on = p.hasMetadata("disable-"+type.toString());
 		Config c = SuperHarvest.getSuperConfig();
-		p.sendMessage(""+ChatColor.GREEN+c.toggle.replace("{1}", (on ?  c.enable: c.disable)).replace("{0}", trans(type)));
+		p.sendMessage(""+ChatColor.GREEN+Config.color(c.toggle.replace("{1}", (on ?  c.enable: c.disable)).replace("{0}", trans(type))));
 
 		set(p, type, on);
 	

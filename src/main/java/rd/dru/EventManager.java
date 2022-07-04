@@ -47,11 +47,13 @@ public class EventManager implements Listener {
 			SuperHarvest.thread.cach.remove(e.getBlock());
 			return;		
 		}
-		String type = e.getBlock().getType().toString(), tool = e.getPlayer().getInventory().getItemInMainHand().getType().toString();
+		
+		@SuppressWarnings("deprecation")
+		String type = e.getBlock().getType().toString(), tool = SuperHarvest.nms.getItemInHand(e.getPlayer()).getType().toString();
 			//FARM
 		Player p = e.getPlayer();
 		if(SuperHarvest.getSuperConfig().enableFarming&&PlayerManager.isEnable(p, OptionType.Farming)
-				&&tool.contains("_HOE")&&e.getBlock().getBlockData() instanceof Ageable) {
+				&&tool.contains("_HOE")&&SuperHarvest.nms.isCrop(e.getBlock())) {
  
 			SuperHarvest.thread.poll(new CropBreaks(e.getPlayer(), e.getBlock()));
 		} else 

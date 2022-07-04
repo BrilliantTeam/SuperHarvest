@@ -24,5 +24,5 @@ public class Helper {
 					bs.add(new Location(b.getWorld(), x+b.getX(), y+b.getY(), z+b.getZ()).getBlock());			
 				}
 		return bs;
-	}	
+	}
 }

@@ -29,7 +29,7 @@ public class Commands implements CommandExecutor, TabCompleter{
 			return true;
 		}
 		if(!p.hasPermission("superharvest.use")) {
-			p.sendMessage(SuperHarvest.getSuperConfig().perms);
+			p.sendMessage(Config.color(SuperHarvest.getSuperConfig().perms));
 		}
 		switch(args[0].toLowerCase()) {
 		case "toggle":
@@ -45,7 +45,7 @@ public class Commands implements CommandExecutor, TabCompleter{
 			PlayerManager.toggle(p, OptionType.Logging);
 			break;
 		case "about":
-			p.sendMessage(ChatColor.YELLOW+SuperHarvest.getSuperConfig().about.replace("{0}", "Dru_TNT"));
+			p.sendMessage(ChatColor.YELLOW+Config.color(SuperHarvest.getSuperConfig().about.replace("{0}", "Dru_TNT")));
 			p.sendMessage(ChatColor.AQUA+"DC: 小千#3422");
 			break;
 		}

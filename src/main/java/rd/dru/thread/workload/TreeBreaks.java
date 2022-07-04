@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 
 import rd.dru.Helper;
 import rd.dru.SuperHarvest;
+import rd.dru.nms.NMSHandler.NSound;
 import rd.dru.thread.Workload;
 
 /**
@@ -41,11 +42,13 @@ public class TreeBreaks implements Workload {
 		if(!going.isEmpty()) {
 			b= going.poll();
 
-			if(b.getType().equals(type)&&player.breakBlock(b)&&isAxe(player.getInventory().getItemInMainHand())) {
+			if(b.getType().equals(type)&&SuperHarvest.nms.breakBlock(player, b)&&isAxe(player.getItemInHand())) {
 				chains(b);
-				b.getWorld().playSound(b.getLocation(), Sound.BLOCK_WOOL_BREAK, 1, 1);		
-				b.getWorld().spawnParticle(Particle.BLOCK_CRACK, b.getLocation().add(0.5,0.5,0.5), 25, 1, 0.1,
-						0.1, 0.1, type.createBlockData());
+				SuperHarvest.nms.crackBlock(b, type);
+				SuperHarvest.nms.playSound(b, NSound.Tree);
+//				b.getWorld().playSound(b.getLocation(), Sound.BLOCK_WOOL_BREAK, 1, 1);		
+//				b.getWorld().spawnParticle(Particle.BLOCK_CRACK, b.getLocation().add(0.5,0.5,0.5), 25, 1, 0.1,
+//						0.1, 0.1, type.createBlockData());
 			} else 
 				return cancel();
 		} else for(int i=0;!leaves.isEmpty()&&i<6;i++) {
@@ -82,7 +85,7 @@ public class TreeBreaks implements Workload {
 	
 	
 	private boolean isLeaves(Block b) {
-		return b.getType().toString().contains("_LEAVES");
+		return b.getType().toString().contains("LEAVES");
 	}
 	
 	private static boolean isAxe(ItemStack item) {

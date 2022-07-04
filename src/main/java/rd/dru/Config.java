@@ -45,6 +45,10 @@ public class Config {
 		return customBreaks.contains(id);
 	}
 	
+	public static String color(String mes) {
+		return ChatColor.translateAlternateColorCodes('&', mes);
+	}
+	
 	public void load() {
 		if(f.isDirectory())
 			f.delete();
@@ -74,9 +78,9 @@ public class Config {
 //		log = config.getString("messages.logging", "伐木");
 //		about = config.getString("messages.about"," 此插件由{0}製作");
 
-		enable = config.getString("messages.eanble",ChatColor.GREEN+"enable");
-		disable = config.getString("messages.disable",ChatColor.RED+"disable");
-		perms = config.getString("messages.permission",ChatColor.RED+"You don't have enough permissino do execute this command");
+		enable = config.getString("messages.eanble","&aenable");
+		disable = config.getString("messages.disable","&cdisable");
+		perms = config.getString("messages.permission","&cYou don't have enough permissino do execute this command");
 		toggle = config.getString("messages.toggle", "Fast {0} is now {1}");
 		toggleAll = config.getString("messages.toggleall", "SuperHarvest is now {0}");
 		farm = config.getString("messages.farming", "farming");
