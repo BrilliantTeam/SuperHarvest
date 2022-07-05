@@ -1,6 +1,5 @@
 package rd.dru.nms;
 
-import org.bukkit.Bukkit;
 import org.bukkit.CropState;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -10,8 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Crops;
 import org.bukkit.material.MaterialData;
-
-import rd.dru.SuperHarvest;
 
 public class V1_9Handler implements NMSHandler{
 	@Override
@@ -27,8 +24,6 @@ public class V1_9Handler implements NMSHandler{
 	
 	@Override
 	public void crackBlock(Block b, Material type) {
-		// TODO Auto-generated method stub
-//		type.data;
 		MaterialData d = new MaterialData(type);
 		b.getWorld().spawnParticle(Particle.BLOCK_CRACK, b.getLocation().add(0.5,0.5,0.5), 25, 1, 0.1,
 				0.1, 0.1, d);

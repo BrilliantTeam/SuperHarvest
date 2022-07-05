@@ -2,6 +2,7 @@ package rd.dru;
 
 import java.io.File;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -28,6 +29,9 @@ public class SuperHarvest extends JavaPlugin{
 		thread.start();
 		new EventManager();
 		getCommand("superharvest").setExecutor(new Commands());
+		
+		int pluginId = 15675; // <-- Replace with the id of your plugin!
+        Metrics metrics = new Metrics(this, pluginId);
 	}
 	
 	@Override

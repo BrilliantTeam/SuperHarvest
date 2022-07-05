@@ -1,14 +1,14 @@
 package rd.dru.nms;
 
-import java.util.Arrays;
-
 import org.bukkit.Bukkit;
-import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 
 public interface NMSHandler {
@@ -25,6 +25,8 @@ public interface NMSHandler {
 	
 	public default boolean breakBlock(Player p,Block b) {
 		BlockBreakEvent event = new BlockBreakEvent(b, p);
+//		net.minecraft.server.v1_8_R3.Block;
+		event.setExpToDrop(BlockExpDropTable.getExpDrop(b, getItemInHand(p)));
 		Bukkit.getPluginManager().callEvent(event);
 		if(!event.isCancelled()) {
 			ItemStack hand = p.getItemInHand();
@@ -32,7 +34,11 @@ public interface NMSHandler {
 			if(hand.getDurability()>=hand.getType().getMaxDurability())
 				return false;
 			b.breakNaturally(hand);
-			
+			if(event.getExpToDrop()>0) {
+				ExperienceOrb exp = (ExperienceOrb) b.getWorld().spawnEntity(b.getLocation().clone().add(0.5,0.5,0.5), EntityType.EXPERIENCE_ORB);
+				exp.setVelocity(new Vector(0,0.2f,0));
+				exp.setExperience(exp.getExperience() + event.getExpToDrop());		
+			}
 		}
 		return !event.isCancelled();
 	}
