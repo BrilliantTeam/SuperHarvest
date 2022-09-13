@@ -1,8 +1,8 @@
 # ⛏️ SuperHarvest | 連鎖採集插件
-連鎖伐木，挖礦和採收農田<br>
 遊戲版本: 1.8+
 
-Spigot: https://www.spigotmc.org/resources/superharvest-animation-fully-configurable-open-source-1-17-1-19.103034/
+Spigot: https://www.spigotmc.org/resources/superharvest-animation-fully-configurable-open-source-1-17-1-19.103034/<br>
+巴哈介紹: https://forum.gamer.com.tw/Co.php?bsn=18673&sn=1035290
 
 # 📃 License | 開源證書
 This project is under GPLv3.
