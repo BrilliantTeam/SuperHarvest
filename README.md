@@ -14,7 +14,7 @@ This project is under GPLv3.
 /sh farming 開啟快速收取農作物，再輸入一次 /sh farming 則會關閉（需手持鋤頭）
 /sh logging 開啟快速伐木，再輸入一次 /sh logging 則會關閉（需手持斧頭）
 /sh mining 開啟快速挖礦，再輸入一次 /sh mining 則會關閉（需手持鎬子）
-/sh notify /sh notify 關閉切換工具通知，再輸入一次 /sh notify 則會開啟
+/sh notify 關閉切換工具通知，再輸入一次 /sh notify 則會開啟
 ```
 
 # 🔓Permissions | 權限
