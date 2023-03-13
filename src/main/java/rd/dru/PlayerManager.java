@@ -33,7 +33,7 @@ public class PlayerManager {
 	public static boolean toggle(Player p) {
 		boolean on = p.hasMetadata("disable-"+OptionType.Farming);
 		Config c = SuperHarvest.getSuperConfig();
-		p.sendMessage(""+ChatColor.GREEN+Config.color(c.toggleAll.replace("{0}", (on ?  c.enable: c.disable))));
+		p.sendMessage(""+ChatColor.GREEN+c.toggleAll.replace("{0}", Helper.tranEnable(on)));
 		
 		
 		set(p, OptionType.Farming, on);
@@ -52,26 +52,22 @@ public class PlayerManager {
 	
 	public static boolean toggle(Player p, OptionType type) {
 		boolean on = p.hasMetadata("disable-"+type.toString());
-		Config c = SuperHarvest.getSuperConfig();
-		p.sendMessage(""+ChatColor.GREEN+Config.color(c.toggle.replace("{1}", (on ?  c.enable: c.disable)).replace("{0}", trans(type))));
+		p.sendMessage(""+ChatColor.GREEN+SuperHarvest.getSuperConfig().toggle.replace("{1}", Helper.tranEnable(on)).replace("{0}", Helper.trans(type)));
 
 		set(p, type, on);
 	
 		return on;
 	}
-	
-	public static String trans(OptionType type) {
-		Config c = SuperHarvest.getSuperConfig();
-		switch (type) {
-		case Farming:
-			return c.farm;
-		case Logging:
-			return c.log;
-		case Mining:
-			return c.mine;
-		default:
-			return "";
-		}
+
+	public static void toggleNotify(Player p) {
+		boolean on = p.hasMetadata("disable-notify");
+		p.sendMessage(SuperHarvest.getSuperConfig().notifyStatus.replace("{0}", Helper.tranEnable(on)));
+		if(!on)
+			p.setMetadata("disable-notify",  new FixedMetadataValue(SuperHarvest.getInstance(), "disable"));
+		else 
+			p.removeMetadata("disable-notify", SuperHarvest.getInstance());
 	}
+	
+
 	
 }

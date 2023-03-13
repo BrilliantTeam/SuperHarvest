@@ -43,6 +43,11 @@ public class V1_8Handler implements NMSHandler{
 		}
 		b.getWorld().playSound(b.getLocation(), e, 1, 1);
 	}
+
+	@Override
+	public void playSound(Block b, Material sound) {
+		playSound(b, NSound.Ore);
+	}
 	
 	@Override
 	public boolean canCropHarvest(Block b) {
@@ -62,6 +67,17 @@ public class V1_8Handler implements NMSHandler{
 		// TODO Auto-generated method stub
 		return b.getType().equals(Material.matchMaterial("SOIL"));
 	}
+
+	@Override
+	public void actionBarMes(Player p, String mes) {
+		LegacyMethod.sendActionBar(p, mes);
+		}
+
+	@Override
+	public void titleBarMes(Player p, String mes) {
+		LegacyMethod.sendTitle(p, " ", mes, 0, 20, 10);		
+	}
+
 	
 
 }

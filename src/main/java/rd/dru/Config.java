@@ -19,8 +19,8 @@ public class Config {
 	FileConfiguration config;
 	List<String> disableWorlds;
 	List<Material> customBreaks;
-	public boolean enableFarming,enableMining,enableLogging;
-	public String toggle, toggleAll, farm, mine, log, enable, disable, about, perms;
+	public boolean enableFarming,enableMining,enableLogging, actionBarNotify, titleBarNotify;
+	public String toggle, toggleAll, farm, mine, log, enable, disable, about, perms, notify, notifyStatus;
 	public Config(File f) { 
 		this.f = f;
 		load();
@@ -66,8 +66,13 @@ public class Config {
 		enableFarming = config.getBoolean("eanble-farming",true);
 		enableMining = config.getBoolean("eanble-mining",true);
 		enableLogging = config.getBoolean("eanble-logging",true);
+		actionBarNotify = config.getBoolean("notify-actionbar", true);
+		titleBarNotify = config.getBoolean("notify-titlebar", false);
 		
+//		enableLogging = config.getBoolean("eanble-logging",true);
 		
+
+//		notify = config.getString("notify", "快速{0}已開啟");
 //		enable = config.getString("messages.eanble",ChatColor.GREEN+"開啟");
 //		disable = config.getString("messages.disable",ChatColor.RED+"關閉");
 //		perms = config.getString("messages.permission",ChatColor.RED+"你沒有足夠權限使用此指令");
@@ -78,15 +83,17 @@ public class Config {
 //		log = config.getString("messages.logging", "伐木");
 //		about = config.getString("messages.about"," 此插件由{0}製作");
 
-		enable = config.getString("messages.eanble","&aenable");
-		disable = config.getString("messages.disable","&cdisable");
-		perms = config.getString("messages.permission","&cYou don't have enough permissino do execute this command");
-		toggle = config.getString("messages.toggle", "Fast {0} is now {1}");
-		toggleAll = config.getString("messages.toggleall", "SuperHarvest is now {0}");
-		farm = config.getString("messages.farming", "farming");
-		mine = config.getString("messages.mining", "mining");
-		log = config.getString("messages.logging", "logging");
-		about = config.getString("messages.about"," This plugin is made by {0}");
+		enable = Config.color(config.getString("messages.eanble","&aenable"));
+		disable = Config.color(config.getString("messages.disable","&cdisable"));
+		notify = Config.color(config.getString("messages.notify", "Fast {0} is now on!"));
+		notifyStatus = Config.color(config.getString("messages.toggleNotify", "Status notify is now {0}!"));
+		perms = Config.color(config.getString("messages.permission","&cYou don't have enough permission to execute this command"));
+		toggle = Config.color(config.getString("messages.toggle", "Fast {0} is now {1}"));
+		toggleAll = Config.color(config.getString("messages.toggleall", "SuperHarvest is now {0}"));
+		farm = Config.color(config.getString("messages.farming", "farming"));
+		mine = Config.color(config.getString("messages.mining", "mining"));
+		log = Config.color(config.getString("messages.logging", "logging"));
+		about = Config.color(config.getString("messages.about"," This plugin is made by {0}"));
 	
 		
 	}
@@ -98,9 +105,15 @@ public class Config {
 			config.set("eanble-mining", enableMining);
 			config.set("eanble-logging", enableLogging);
 			
+
+			config.set("notify-actionbar", actionBarNotify);
+			config.set("notify-titlebar", titleBarNotify);
+			
 			
 			config.set("messages.eanble",enable);
 			config.set("messages.disable",disable);
+			config.set("messages.notify", notify);
+			config.set("messages.notifyStatus", notifyStatus);
 			config.set("messages.permission",perms);
 			config.set("messages.toggle", toggle);
 			config.set("messages.toggleall", toggleAll);
@@ -108,6 +121,7 @@ public class Config {
 			config.set("messages.mining", mine);
 			config.set("messages.logging", log);
 			config.set("messages.about", about);
+			
 			config.save(f);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

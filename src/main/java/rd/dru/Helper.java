@@ -1,14 +1,17 @@
 package rd.dru;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
+import rd.dru.PlayerManager.OptionType;
 
 public class Helper {
-	
+
+	static Config c = SuperHarvest.getSuperConfig();
 	/**
 	 * 
 	 * @param center block
@@ -25,4 +28,31 @@ public class Helper {
 				}
 		return bs;
 	}
+	
+	public static String trans(OptionType type) {
+		switch (type) {
+		case Farming:
+			return c.farm;
+		case Logging:
+			return c.log;
+		case Mining:
+			return c.mine;
+		default:
+			return "";
+		}
+	}
+	
+	public static String tranEnable(boolean enabled) {
+		return enabled ? c.enable : c.disable;
+	}
+	
+	private final List<String> stones =  Arrays.asList("STONE","DEEPSLATE","NETHERRACK","COBBLED_DEEPSLATE","GRAVEL","BLACKSTONE","GRANITE",
+			"DIORITE", "ANDESITE", "CALCITE","TUFF","DRIPSTONE_BLOCK","DIRT","MAGMA_BLOCK","BASALT","BEDROCK");
+	
+    public boolean isstone(Block block){
+    	return stones.contains(block.getType().name());
+    	
+    }
+
+
 }

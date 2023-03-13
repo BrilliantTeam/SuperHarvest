@@ -1,5 +1,6 @@
 package rd.dru.nms;
 
+import org.bukkit.Bukkit;
 import org.bukkit.CropState;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -9,6 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Crops;
 import org.bukkit.material.MaterialData;
+
+import rd.dru.nms.NMSHandler.NSound;
 
 public class V1_9Handler implements NMSHandler{
 	@Override
@@ -57,6 +60,10 @@ public class V1_9Handler implements NMSHandler{
 	}
 	
 	@Override
+	public void playSound(Block b, Material sound) {
+		playSound(b, NSound.Ore);
+	}
+	@Override
 	public boolean canCropHarvest(Block b) {
 		if(!(isCrop(b)))
 			return false;
@@ -73,5 +80,22 @@ public class V1_9Handler implements NMSHandler{
 	public boolean isFarmLnad(Block b) {
 		// TODO Auto-generated method stub
 		return b.getType().equals(Material.matchMaterial("SOIL"));
+	}
+	
+	@Override
+	public void actionBarMes(Player p, String mes) {
+		if(VersionChecker.getServerVersion()<11)
+			LegacyMethod.sendActionBar(p, mes);
+		else 
+			new V1_13Handler().actionBarMes(p, mes);
+			
+	}
+
+	@Override
+	public void titleBarMes(Player p, String mes) {
+		if(VersionChecker.getServerVersion()<10)
+			LegacyMethod.sendTitle(p, " ", mes, 0, 20, 10);		
+		else 
+			new V1_13Handler().titleBarMes(p, mes);
 	}
 }

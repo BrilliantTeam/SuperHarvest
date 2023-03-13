@@ -2,6 +2,7 @@ package rd.dru.nms;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ExperienceOrb;
@@ -53,11 +54,13 @@ public interface NMSHandler {
 	
 //	@SuppressWarnings("deprecation")
 	public void playSound(Block b,NSound sound);
+	public void playSound(Block b,Material sound);
 	
 	public boolean canCropHarvest(Block b);
 	public boolean isFarmLnad(Block b);
 	public boolean isCrop(Block b);
-
+	public void actionBarMes(Player p, String mes);
+	public void titleBarMes(Player p, String mes);
 	
 
 }

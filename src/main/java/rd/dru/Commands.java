@@ -43,11 +43,15 @@ public class Commands implements CommandExecutor, TabCompleter{
 			break;
 		case "logging":
 			PlayerManager.toggle(p, OptionType.Logging);
-			break;
+			break; 
 		case "about":
-			p.sendMessage(ChatColor.YELLOW+Config.color(SuperHarvest.getSuperConfig().about.replace("{0}", "Dru_TNT")));
+			p.sendMessage(ChatColor.YELLOW+SuperHarvest.getSuperConfig().about.replace("{0}", "Dru_TNT"));
 			p.sendMessage(ChatColor.AQUA+"DC: 小千#3422");
 			break;
+		case "notify":
+			PlayerManager.toggleNotify(p);
+			break;		
+
 		}
 		
 		return true;
@@ -56,7 +60,7 @@ public class Commands implements CommandExecutor, TabCompleter{
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
 		// TODO Auto-generated method stub
-		return Arrays.asList("toggle","farming","mining","logging","about");
+		return Arrays.asList("toggle","farming","mining","logging","about","notify");
 	}
 
 }

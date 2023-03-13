@@ -8,6 +8,8 @@ import org.bukkit.block.data.Ageable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import rd.dru.SuperHarvest;
 import rd.dru.nms.NMSHandler.NSound;
 
@@ -57,7 +59,10 @@ public class V1_16Handler implements NMSHandler{
 		}
 		b.getWorld().playSound(b.getLocation(), e, 1, 1);	
 	}
-	
+	@Override
+	public void playSound(Block b, Material sound) {
+		b.getWorld().playSound(b.getLocation(), sound.createBlockData().getSoundGroup().getBreakSound(), 1, 1);	
+	}
 	@Override
 	public boolean isCrop(Block b) {
 		// TODO Auto-generated method stub
@@ -77,5 +82,14 @@ public class V1_16Handler implements NMSHandler{
 		Ageable age = (Ageable)b.getBlockData();
 		return age.getAge()== age.getMaximumAge();
 		
+	}
+	@Override
+	public void actionBarMes(Player p, String mes) {
+		p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(mes));
+	}
+
+	@Override
+	public void titleBarMes(Player p, String mes) {
+		p.sendTitle(" ", mes, 0, 20, 10);
 	}
 }

@@ -12,7 +12,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Crops;
 import org.bukkit.material.MaterialData;
 
+import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.XSound;
+
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import rd.dru.SuperHarvest;
+import rd.dru.nms.NMSHandler.NSound;
 
 public class V1_13Handler implements NMSHandler{
 	@Override
@@ -63,6 +69,11 @@ public class V1_13Handler implements NMSHandler{
 	}
 	
 	@Override
+	public void playSound(Block b, Material sound) {
+		playSound(b, NSound.Ore);
+	}
+	
+	@Override
 	public boolean isCrop(Block b) {
 		// TODO Auto-generated method stub
 		return b.getBlockData() instanceof Ageable;
@@ -81,5 +92,14 @@ public class V1_13Handler implements NMSHandler{
 		Ageable age = (Ageable)b.getBlockData();
 		return age.getAge()== age.getMaximumAge();
 		
+	}
+	@Override
+	public void actionBarMes(Player p, String mes) {
+		p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(mes));
+	}
+
+	@Override
+	public void titleBarMes(Player p, String mes) {
+		p.sendTitle(" ", mes, 0, 20, 10);
 	}
 }
