@@ -12,6 +12,8 @@ public class BlockExpDropTable {
 	private static int total=0, min = 0, add= 0;
 
 	public static int getExpDrop(Block b,ItemStack tool) {
+		if(b.getDrops().isEmpty())
+			return 0;
 		switch(b.getDrops(tool).iterator().next().getType().toString()) {
 		case "COAL":
 			add = 2;

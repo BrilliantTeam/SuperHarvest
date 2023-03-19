@@ -1,30 +1,15 @@
 package rd.dru;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.Ageable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
-import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Consumer;
-
 import rd.dru.PlayerManager.OptionType;
-import rd.dru.nms.NMSHandler;
 import rd.dru.thread.workload.CropBreaks;
 import rd.dru.thread.workload.OreBreaks;
 import rd.dru.thread.workload.TreeBreaks;
@@ -35,8 +20,7 @@ import rd.dru.thread.workload.TreeBreaks;
  *
  */
 public class EventManager implements Listener {
-//	HashMap<Supplier<BlockBreakEvent>, Consumer<BlockBreakEvent>> events = new HashMap<>();
-	
+
 	public EventManager() {
 		Bukkit.getPluginManager().registerEvents(this, SuperHarvest.getInstance());
 		

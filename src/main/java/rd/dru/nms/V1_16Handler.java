@@ -1,5 +1,6 @@
 package rd.dru.nms;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -35,7 +36,10 @@ public class V1_16Handler implements NMSHandler{
 	
 	@Override
 	public void crackCrop(Block b, Material type) {
-		crackBlock(b, Material.LEGACY_CROPS);
+		if(type.equals(Material.NETHER_WART))
+			crackBlock(b, Material.NETHER_WART);
+		else
+			crackBlock(b, Material.LEGACY_CROPS);
 	}
 	
 	@Override
@@ -44,7 +48,10 @@ public class V1_16Handler implements NMSHandler{
 		Sound e;
 		switch(sound) {
 		case Farm:
-			e = Sound.BLOCK_CROP_BREAK;
+			if(b.getType().equals(Material.NETHER_WART))
+				e = Sound.BLOCK_NETHER_WART_BREAK;
+			else
+				e = Sound.BLOCK_CROP_BREAK;
 			break;
 		case Ore:
 			e = Sound.BLOCK_STONE_BREAK;
@@ -72,7 +79,7 @@ public class V1_16Handler implements NMSHandler{
 	@Override
 	public boolean isFarmLnad(Block b) {
 		// TODO Auto-generated method stub
-		return b.getType().equals(Material.FARMLAND);
+		return b.getType().equals(Material.FARMLAND)||b.getType().equals(Material.SOUL_SAND);
 	}
 	
 	@Override

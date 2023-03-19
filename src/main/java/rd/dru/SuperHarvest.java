@@ -31,12 +31,13 @@ public class SuperHarvest extends JavaPlugin{
 		getCommand("superharvest").setExecutor(new Commands());
 		
 		int pluginId = 15675; // <-- Replace with the id of your plugin!
-        Metrics metrics = new Metrics(this, pluginId);
+        new Metrics(this, pluginId);
+		Bukkit.getLogger().info("SuperHarvest is enabled.");
 	}
 	
 	@Override
 	public void onDisable() {
-		Bukkit.getLogger().info("Disable ");
+		Bukkit.getLogger().info("SuperHarvest is disabled.");
 	}
 	
 	public static SuperHarvest getInstance() {

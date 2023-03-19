@@ -36,7 +36,6 @@ public class OreBreaks implements Workload {
 		chains(loc);
 	}
 	
-	private static int max = 12;
 	@Override
 	public boolean compute() {
 		if(!player.isOnline()||player==null||going.isEmpty())

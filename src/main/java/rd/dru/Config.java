@@ -85,7 +85,7 @@ public class Config {
 
 		enable = Config.color(config.getString("messages.eanble","&aenable"));
 		disable = Config.color(config.getString("messages.disable","&cdisable"));
-		notify = Config.color(config.getString("messages.notify", "Fast {0} is now on!"));
+		notify = Config.color(config.getString("messages.notify", "Fast {0} is now on"));
 		notifyStatus = Config.color(config.getString("messages.toggleNotify", "Status notify is now {0}!"));
 		perms = Config.color(config.getString("messages.permission","&cYou don't have enough permission to execute this command"));
 		toggle = Config.color(config.getString("messages.toggle", "Fast {0} is now {1}"));

@@ -42,16 +42,11 @@ public class CropBreaks implements Workload{
 			return true;
 			
 			Block b = going.poll().getRelative(BlockFace.UP);
-			SuperHarvest.nms.crackCrop(b, b.getType());
-//			b.getWorld().spawnParticle(Particle.BLOCK_CRACK, b.getLocation().add(0.5,0.5,0.5), 100, 0.1, 0.1,
-//					0.1, 0.1, b.getType().createBlockData());
-			
 		
 			if(canHarvest(b)) {
+				SuperHarvest.nms.crackCrop(b, b.getType());
+				SuperHarvest.nms.playSound(b, NSound.Farm);
 				if(SuperHarvest.nms.breakBlock(player, b)&&isHoe(SuperHarvest.nms.getItemInHand(player))) {
-					SuperHarvest.nms.playSound(b, NSound.Farm);
-					
-//					b.getWorld().playSound(b.getLocation(), Sound.BLOCK_CROP_BREAK, 1, 1);		
 					chains(b.getRelative(BlockFace.DOWN));
 				} else 
 					return cancel();
@@ -82,8 +77,6 @@ public class CropBreaks implements Workload{
 	}
 	
 	private boolean canHarvest(Block b) {
-//		if(!(SuperHarvest.nms.isCrop(b)))
-//			return false;
 		return SuperHarvest.nms.canCropHarvest(b);
 	}
 	

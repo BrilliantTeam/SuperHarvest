@@ -5,8 +5,6 @@ import java.util.Deque;
 import java.util.stream.Collectors;
 
 import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
