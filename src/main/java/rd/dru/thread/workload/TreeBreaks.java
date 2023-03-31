@@ -4,6 +4,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.stream.Collectors;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -13,6 +14,7 @@ import rd.dru.Helper;
 import rd.dru.SuperHarvest;
 import rd.dru.nms.NMSHandler.NSound;
 import rd.dru.thread.Workload;
+import rd.dru.utils.MaterialGroup;
 
 /**
  * 
@@ -22,14 +24,20 @@ import rd.dru.thread.Workload;
 public class TreeBreaks implements Workload {
 
 	Deque<Block> going = new ArrayDeque<>(), leaves = new ArrayDeque<>();
-	Material type;
+	MaterialGroup type;
 	Player player;
 	
 	public TreeBreaks(Player player, Block loc) {
 		this.player = player;
-		this.type = loc.getType();
-		chains(loc);
+		this.type = new MaterialGroup(loc.getType());
+		chains(loc);	
+	}
 	
+	public TreeBreaks(Player player, Block loc, MaterialGroup mats) {
+		this.player = player;
+		this.type = mats;
+		chains(loc);
+		
 	}
 	
 	@Override
@@ -38,15 +46,12 @@ public class TreeBreaks implements Workload {
 			return true;
 		Block b;
 		if(!going.isEmpty()) {
-			b= going.poll();
-
-			if(b.getType().equals(type)&&SuperHarvest.nms.breakBlock(player, b)&&isAxe(player.getItemInHand())) {
+			b = going.poll();
+			Material t = b.getType();
+			if(type.contains(t)&&SuperHarvest.nms.breakBlock(player, b)&&isAxe(player.getItemInHand())) {
 				chains(b);
-				SuperHarvest.nms.crackBlock(b, type);
+				SuperHarvest.nms.crackBlock(b, t);
 				SuperHarvest.nms.playSound(b, NSound.Tree);
-//				b.getWorld().playSound(b.getLocation(), Sound.BLOCK_WOOL_BREAK, 1, 1);		
-//				b.getWorld().spawnParticle(Particle.BLOCK_CRACK, b.getLocation().add(0.5,0.5,0.5), 25, 1, 0.1,
-//						0.1, 0.1, type.createBlockData());
 			} else 
 				return cancel();
 		} else for(int i=0;!leaves.isEmpty()&&i<6;i++) {
@@ -74,7 +79,7 @@ public class TreeBreaks implements Workload {
 		Helper.getNear(b).stream().forEach(nb->{
 			if(isLeaves(nb)&&!leaves.contains(nb)) {
 				leaves.add(nb);
-			} else if(nb.getType().equals(type)&&nb.getY()>=b.getY()&&!going.contains(nb)) {
+			} else if(type.contains(nb.getType())&&nb.getY()>=b.getY()&&!going.contains(nb)) {
 				SuperHarvest.thread.cach.add(nb);
 				going.add(nb);		
 			}

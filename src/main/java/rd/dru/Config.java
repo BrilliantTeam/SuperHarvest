@@ -19,8 +19,8 @@ public class Config {
 	FileConfiguration config;
 	List<String> disableWorlds;
 	List<Material> customBreaks;
-	public boolean enableFarming,enableMining,enableLogging, actionBarNotify, titleBarNotify;
-	public String toggle, toggleAll, farm, mine, log, enable, disable, about, perms, notify, notifyStatus;
+	public boolean enableFarming,enableMining,enableLogging, actionBarNotify, titleBarNotify, defaultSneaking;
+	public String toggle, toggleAll, farm, mine, log, enable, disable, about, perms, notify, notifyStatus,classicMode,sneakingMode;
 	public Config(File f) { 
 		this.f = f;
 		load();
@@ -68,6 +68,7 @@ public class Config {
 		enableLogging = config.getBoolean("eanble-logging",true);
 		actionBarNotify = config.getBoolean("notify-actionbar", true);
 		titleBarNotify = config.getBoolean("notify-titlebar", false);
+		defaultSneaking = config.getBoolean("default-sneaking-mode", false);
 		
 //		enableLogging = config.getBoolean("eanble-logging",true);
 		
@@ -94,6 +95,9 @@ public class Config {
 		mine = Config.color(config.getString("messages.mining", "mining"));
 		log = Config.color(config.getString("messages.logging", "logging"));
 		about = Config.color(config.getString("messages.about"," This plugin is made by {0}"));
+		
+		classicMode = Config.color(config.getString("messages.classicMode","SuperHarvest is now on Classic mode."));
+		sneakingMode = Config.color(config.getString("messages.sneakingMode","SuperHarvest is now on Sneaking mode."));
 	
 		
 	}

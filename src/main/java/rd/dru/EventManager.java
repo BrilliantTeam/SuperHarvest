@@ -2,17 +2,20 @@ package rd.dru;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import rd.dru.PlayerManager.OptionType;
 import rd.dru.thread.workload.CropBreaks;
 import rd.dru.thread.workload.OreBreaks;
 import rd.dru.thread.workload.TreeBreaks;
+import rd.dru.utils.MaterialGroup;
 
 /**
  * 
@@ -26,19 +29,32 @@ public class EventManager implements Listener {
 		
 	}
 	
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onSneaking(PlayerToggleSneakEvent e) {
+		if(e.isSneaking()&&PlayerManager.isSneakingMode(e.getPlayer()))
+			notify(e.getPlayer());
+	}
+	
 	/**
 	 * Notify whether player has turn SuperHarvest on
 	 * @param e of the event
 	 */
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onItemHeld(PlayerItemHeldEvent e) {
-		ItemStack i = e.getPlayer().getInventory().getItem(e.getNewSlot());
-		if(i==null)
-			return;
+		if(!PlayerManager.isSneakingMode(e.getPlayer()))
+			notify(e.getPlayer(), e.getNewSlot());
+	}
+	private boolean notify(Player p) {
+		return notify(p, p.getInventory().getHeldItemSlot());
+	}
+	
+	private boolean notify(Player p, int slot) {
+		ItemStack i = p.getInventory().getItem(slot);
+		if(i==null||!PlayerManager.shouldNotify(p))
+			return false;
 		String tool = i.getType().toString();
 		if(!tool.contains("_"))
-			return;
-		Player p = e.getPlayer();
+			return false;
 		OptionType type = null;
 		switch(tool.substring(tool.indexOf("_")).toLowerCase()) {
 		case "_hoe":
@@ -59,9 +75,12 @@ public class EventManager implements Listener {
 				SuperHarvest.nms.actionBarMes(p, message);
 			if(c.titleBarNotify) 
 				SuperHarvest.nms.titleBarMes(p, message);
+			return true;
 		}
-			
+		return false;
 	}
+	
+	private static MaterialGroup speicalTrees = new MaterialGroup("MANGROVE_WOOD","MANGROVE_LOG","MANGROVE_ROOTS","WARPED_STEM","CRIMSON_STEM");
 	
 	/**
 	 *	Active super break chains. 
@@ -71,9 +90,8 @@ public class EventManager implements Listener {
 	public void onBlockBreak(BlockBreakEvent e) {
 		if(e.isCancelled())
 			return;
-		if(SuperHarvest.thread.cach.contains(e.getBlock())) {
+		if(SuperHarvest.thread.cach.contains(e.getBlock())||(PlayerManager.isSneakingMode(e.getPlayer())&&!e.getPlayer().isSneaking())) {
 			SuperHarvest.thread.cach.remove(e.getBlock());
-			
 			return;		
 		}
 		
@@ -94,11 +112,14 @@ public class EventManager implements Listener {
 			
 		//AXE
 		if(SuperHarvest.getSuperConfig().enableLogging&&PlayerManager.isEnable(p, OptionType.Logging)
-				&&tool.contains("_AXE")&&
-				(type.contains("LOG")||type.equals("WARPED_STEM")||type.equals("CRIMSON_STEM"))) 
-		{
-			SuperHarvest.thread.poll(new TreeBreaks(e.getPlayer(), e.getBlock()));	
+				&&tool.contains("_AXE")) {
+			if(type.contains("LOG")) {
+				SuperHarvest.thread.poll(new TreeBreaks(e.getPlayer(), e.getBlock()));			
+			} else if(speicalTrees.contains(e.getBlock().getType())) {
+				SuperHarvest.thread.poll(new TreeBreaks(e.getPlayer(), e.getBlock(), speicalTrees));				
+			}
 		}
+			
 			
 	
 	}

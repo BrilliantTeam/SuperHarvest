@@ -44,26 +44,26 @@ public class V1_17Handler implements NMSHandler{
 	@Override
 	public void playSound(Block b, NSound sound) {
 		// TODO Auto-generated method stub
-		Sound e;
-		switch(sound) {
-		case Farm:
-			if(b.getType().equals(Material.NETHER_WART))
-				e = Sound.BLOCK_NETHER_WART_BREAK;
-			else
-				e = Sound.BLOCK_CROP_BREAK;
-			break;
-		case Ore:
-			e = Sound.BLOCK_STONE_BREAK;
-			break;
-		case Tree:
-			e = Sound.BLOCK_WOOD_BREAK;	
-			break;
-		default:
-			e = Sound.BLOCK_GRASS_BREAK;
-			break;
-			
-		}
-		b.getWorld().playSound(b.getLocation(), e, 1, 1);	
+//		Sound e;
+//		switch(sound) {
+//		case Farm:
+//			if(b.getType().equals(Material.NETHER_WART))
+//				e = Sound.BLOCK_NETHER_WART_BREAK;
+//			else
+//				e = Sound.BLOCK_CROP_BREAK;
+//			break;
+//		case Ore:
+//			e = Sound.BLOCK_STONE_BREAK;
+//			break;
+//		case Tree:
+//			e = Sound.BLOCK_WOOD_BREAK;	
+//			break;
+//		default:
+//			e = Sound.BLOCK_GRASS_BREAK;
+//			break;
+//			
+//		}
+		b.getWorld().playSound(b.getLocation(), b.getBlockData().getSoundGroup().getBreakSound(), 1, 1);	
 	}
 	
 	@Override

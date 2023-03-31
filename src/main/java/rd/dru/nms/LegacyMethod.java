@@ -11,9 +11,9 @@ public class LegacyMethod {
     private static int out;
     
     public static void sendTitle(Player player, String title, String subtitle, int in, int stay, int out) {
-    	in = in;
-        stay = stay;
-        out = out;
+    	LegacyMethod.in = in;
+    	LegacyMethod.stay = stay;
+        LegacyMethod.out = out;
         titleSub(player, title, true);
         titleSub(player, subtitle, false);
     }

@@ -28,6 +28,15 @@ public class PlayerManager {
 		return !p.hasMetadata("disable-"+type.toString())&&p.hasPermission("superharvest."+type.toString().toLowerCase());
 	}
 	
+	public static boolean isSneakingMode(Player p) {
+		return p.hasMetadata("enable-sneaking") ? p.getMetadata("enable-sneaking").get(0).asBoolean() :
+			SuperHarvest.getSuperConfig().defaultSneaking;
+	}
+	
+	public static boolean shouldNotify(Player p) {
+		return !p.hasMetadata("disable-notify");
+	}
+	
 	public static boolean toggle(Player p) {
 		boolean on = p.hasMetadata("disable-"+OptionType.Farming);
 		Config c = SuperHarvest.getSuperConfig();
@@ -64,6 +73,15 @@ public class PlayerManager {
 			p.setMetadata("disable-notify",  new FixedMetadataValue(SuperHarvest.getInstance(), "disable"));
 		else 
 			p.removeMetadata("disable-notify", SuperHarvest.getInstance());
+	}
+	
+	public static void toggleMode(Player p) {
+		Config c = SuperHarvest.getSuperConfig();
+		boolean on = p.hasMetadata("enable-sneaking") ? p.getMetadata("enable-sneaking").get(0).asBoolean() :
+			c.defaultSneaking;
+		
+		p.sendMessage(!on ? c.sneakingMode : c.classicMode);
+		p.setMetadata("enable-sneaking",  new FixedMetadataValue(SuperHarvest.getInstance(), !on));
 	}
 	
 
