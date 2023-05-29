@@ -1,6 +1,6 @@
 name: SuperHarvest
 main: rd.dru.SuperHarvest
-version: 1.3
+version: 1.3.2
 description: "break ores, trees, farms break fast and instanly!"
 author: Dru_TNT
 api-version: 1.13
@@ -12,8 +12,11 @@ permissions:
   superharvest.use:
      description: Allows you to apply super harvest
      default: true
-  superharvest.use:
-     description: Allows you to apply super harvest
+  superharvest.block.*:
+     description: Allows you to apply super harvest on specified blocks
+     default: true
+  superharvest.tool.*:
+     description: Allows you to apply super harvest with specified tools
      default: true
   superharvest.mining:
      description: Allows you to apply fast mining

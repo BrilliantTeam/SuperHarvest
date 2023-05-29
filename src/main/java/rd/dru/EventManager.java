@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
@@ -94,16 +95,17 @@ public class EventManager implements Listener {
 			SuperHarvest.thread.cach.remove(e.getBlock());
 			return;		
 		}
-		
-		String type = e.getBlock().getType().toString(), tool = SuperHarvest.nms.getItemInHand(e.getPlayer()).getType().toString();
-			//FARM
 		Player p = e.getPlayer();
+		Material hand = SuperHarvest.nms.getItemInHand(p).getType();
+		String type = e.getBlock().getType().toString(), tool = hand.toString();
+		if(!p.hasPermission("superharvest.block."+type.toLowerCase())||!p.hasPermission("superharvest.tool."+tool.toLowerCase()))
+			return;
+		//FARM
 		if(SuperHarvest.getSuperConfig().enableFarming&&PlayerManager.isEnable(p, OptionType.Farming)
 				&&tool.contains("_HOE")&&SuperHarvest.nms.isCrop(e.getBlock())) {
  
 			SuperHarvest.thread.poll(new CropBreaks(e.getPlayer(), e.getBlock()));
 		} else 
-
 		//ORE
 		if(SuperHarvest.getSuperConfig().enableMining&&PlayerManager.isEnable(p, OptionType.Mining)
 				&&tool.contains("_PICKAXE")&&type.contains("_ORE")) {

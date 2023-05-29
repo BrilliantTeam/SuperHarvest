@@ -19,6 +19,7 @@ public class Config {
 	FileConfiguration config;
 	List<String> disableWorlds;
 	List<Material> customBreaks;
+	public long bufferMs;
 	public boolean enableFarming,enableMining,enableLogging, actionBarNotify, titleBarNotify, defaultSneaking;
 	public String toggle, toggleAll, farm, mine, log, enable, disable, about, perms, notify, notifyStatus,classicMode,sneakingMode;
 	public Config(File f) { 
@@ -69,10 +70,10 @@ public class Config {
 		actionBarNotify = config.getBoolean("notify-actionbar", true);
 		titleBarNotify = config.getBoolean("notify-titlebar", false);
 		defaultSneaking = config.getBoolean("default-sneaking-mode", false);
+		bufferMs = config.getLong("cpu-mileseconds-limitation", 3);
 		
 //		enableLogging = config.getBoolean("eanble-logging",true);
 		
-
 //		notify = config.getString("notify", "快速{0}已開啟");
 //		enable = config.getString("messages.eanble",ChatColor.GREEN+"開啟");
 //		disable = config.getString("messages.disable",ChatColor.RED+"關閉");
@@ -83,7 +84,6 @@ public class Config {
 //		mine = config.getString("messages.mining", "挖礦");
 //		log = config.getString("messages.logging", "伐木");
 //		about = config.getString("messages.about"," 此插件由{0}製作");
-
 		enable = Config.color(config.getString("messages.eanble","&aenable"));
 		disable = Config.color(config.getString("messages.disable","&cdisable"));
 		notify = Config.color(config.getString("messages.notify", "Fast {0} is now on"));
@@ -108,11 +108,10 @@ public class Config {
 			config.set("eanble-farming",enableFarming);
 			config.set("eanble-mining", enableMining);
 			config.set("eanble-logging", enableLogging);
+			config.set("cpu-mileseconds-limitation", bufferMs);
 			
-
 			config.set("notify-actionbar", actionBarNotify);
 			config.set("notify-titlebar", titleBarNotify);
-			
 			
 			config.set("messages.eanble",enable);
 			config.set("messages.disable",disable);

@@ -20,8 +20,12 @@ public class SafeThread implements Runnable{
 
 	Deque<Workload> queue = new ArrayDeque<>();
 	public HashSet<Block> cach = new HashSet<>();
-	long limit = 1l;
+	long limit = 3l;
 	
+	public SafeThread(long limit) {
+		// TODO Auto-generated constructor stub
+		this.limit = limit;
+	}
 	/**
 	 * 
 	 * @param poll some workload to run it later
