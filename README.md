@@ -16,6 +16,7 @@ This project is under GPLv3.
 /sh mining 開啟快速挖礦，再輸入一次 /sh mining 則會關閉（需手持鎬子）
 /sh notify 關閉切換工具通知，再輸入一次 /sh notify 則會開啟
 /sh mode 切換成蹲下模式，再輸入一次 /sh mode 切換回經典模式
+/sh language <lang-code> 切換顯示語言，輸入/sh language default 切換回預設語言
 ```
 
 # 🔓Permissions | 權限
