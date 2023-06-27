@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import rd.dru.PlayerManager.OptionType;
+import rd.dru.config.Config;
 import rd.dru.thread.workload.CropBreaks;
 import rd.dru.thread.workload.OreBreaks;
 import rd.dru.thread.workload.TreeBreaks;
@@ -71,7 +72,7 @@ public class EventManager implements Listener {
 		
 		if(type!=null&&PlayerManager.isEnable(p, type)) {
 			Config c = SuperHarvest.getSuperConfig();
-			String message = ""+ChatColor.GREEN+c.notify.replace("{0}", Helper.trans(type));
+			String message = ""+ChatColor.GREEN+PlayerManager.getLang(p).notify.replace("{0}", Helper.trans(p, type));
 			if(c.actionBarNotify)
 				SuperHarvest.nms.actionBarMes(p, message);
 			if(c.titleBarNotify) 
@@ -98,7 +99,8 @@ public class EventManager implements Listener {
 		Player p = e.getPlayer();
 		Material hand = SuperHarvest.nms.getItemInHand(p).getType();
 		String type = e.getBlock().getType().toString(), tool = hand.toString();
-		if(!p.hasPermission("superharvest.block."+type.toLowerCase())||!p.hasPermission("superharvest.tool."+tool.toLowerCase()))
+		if((!p.hasPermission("superharvest.block."+type.toLowerCase())&&p.isPermissionSet("superharvest.block."+type.toLowerCase()))
+				||(!p.hasPermission("superharvest.tool."+tool.toLowerCase())&&p.isPermissionSet("superharvest.tool."+tool.toLowerCase())))
 			return;
 		//FARM
 		if(SuperHarvest.getSuperConfig().enableFarming&&PlayerManager.isEnable(p, OptionType.Farming)

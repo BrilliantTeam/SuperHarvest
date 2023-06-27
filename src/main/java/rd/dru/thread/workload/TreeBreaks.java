@@ -48,7 +48,7 @@ public class TreeBreaks implements Workload {
 		if(!going.isEmpty()) {
 			b = going.poll();
 			Material t = b.getType();
-			if(type.contains(t)&&SuperHarvest.nms.breakBlock(player, b)&&isAxe(player.getItemInHand())) {
+			if(type.contains(t)&&b.getWorld().equals(player.getWorld())&&SuperHarvest.nms.breakBlock(player, b)&&isAxe(player.getItemInHand())) {
 				chains(b);
 				SuperHarvest.nms.crackBlock(b, t);
 				SuperHarvest.nms.playSound(b, NSound.Tree);

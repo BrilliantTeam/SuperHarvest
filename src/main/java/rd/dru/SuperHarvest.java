@@ -6,6 +6,7 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import rd.dru.config.Config;
 import rd.dru.nms.NMSHandler;
 import rd.dru.nms.VersionChecker;
 import rd.dru.thread.SafeThread;

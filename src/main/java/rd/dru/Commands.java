@@ -2,6 +2,7 @@ package rd.dru;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,6 +12,7 @@ import org.bukkit.entity.Player;
 
 import net.md_5.bungee.api.ChatColor;
 import rd.dru.PlayerManager.OptionType;
+import rd.dru.config.Config;
 
 /**
  * 
@@ -29,7 +31,7 @@ public class Commands implements CommandExecutor, TabCompleter{
 			return true;
 		}
 		if(!p.hasPermission("superharvest.use")) {
-			p.sendMessage(Config.color(SuperHarvest.getSuperConfig().perms));
+			p.sendMessage(Config.color(PlayerManager.getLang(p).perms));
 		}
 		switch(args[0].toLowerCase()) {
 		case "toggle":
@@ -45,8 +47,14 @@ public class Commands implements CommandExecutor, TabCompleter{
 			PlayerManager.toggle(p, OptionType.Logging);
 			break; 
 		case "about":
-			p.sendMessage(ChatColor.YELLOW+SuperHarvest.getSuperConfig().about.replace("{0}", "Dru_TNT"));
-			p.sendMessage(ChatColor.AQUA+"DC: 小千#3422");
+			p.sendMessage(ChatColor.YELLOW+Config.color(PlayerManager.getLang(p).about.replace("{0}", "Dru_TNT")));
+			p.sendMessage(ChatColor.AQUA+"DC: dru_tnt");
+			break;
+		case "language":
+			if(args.length<2)
+				break;
+			if(SuperHarvest.getSuperConfig().getLangs().contains(args[1])||args[1].equals("default"))
+				PlayerManager.setLang(p, args[1]);
 			break;
 		case "mode":
 			PlayerManager.toggleMode(p);
@@ -62,8 +70,12 @@ public class Commands implements CommandExecutor, TabCompleter{
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-		// TODO Auto-generated method stub
-		return Arrays.asList("toggle","farming","mining","logging","about","notify","mode");
+		if(args.length>0&&args[0].equals("language")) {
+			List<String> langs = SuperHarvest.getSuperConfig().getLangs().stream().collect(Collectors.toList());
+			langs.add("default");
+			return langs;
+		} else
+			return Arrays.asList("toggle","farming","mining","logging","about","notify","mode","language");
 	}
 
 }

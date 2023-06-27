@@ -4,6 +4,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 
+import rd.dru.config.Config;
+import rd.dru.config.Lang;
+
 /**
  * 
  * @author Dru_TNT
@@ -39,8 +42,7 @@ public class PlayerManager {
 	
 	public static boolean toggle(Player p) {
 		boolean on = p.hasMetadata("disable-"+OptionType.Farming);
-		Config c = SuperHarvest.getSuperConfig();
-		p.sendMessage(""+ChatColor.GREEN+c.toggleAll.replace("{0}", Helper.tranEnable(on)));
+		p.sendMessage(""+ChatColor.GREEN+getLang(p).toggleAll.replace("{0}", Helper.tranEnable(p, on)));
 		
 		
 		set(p, OptionType.Farming, on);
@@ -59,7 +61,7 @@ public class PlayerManager {
 	
 	public static boolean toggle(Player p, OptionType type) {
 		boolean on = p.hasMetadata("disable-"+type.toString());
-		p.sendMessage(""+ChatColor.GREEN+SuperHarvest.getSuperConfig().toggle.replace("{1}", Helper.tranEnable(on)).replace("{0}", Helper.trans(type)));
+		p.sendMessage(""+ChatColor.GREEN+getLang(p).toggle.replace("{1}", Helper.tranEnable(p, on)).replace("{0}", Helper.trans(p, type)));
 
 		set(p, type, on);
 	
@@ -68,7 +70,7 @@ public class PlayerManager {
 
 	public static void toggleNotify(Player p) {
 		boolean on = p.hasMetadata("disable-notify");
-		p.sendMessage(SuperHarvest.getSuperConfig().notifyStatus.replace("{0}", Helper.tranEnable(on)));
+		p.sendMessage(getLang(p).notifyStatus.replace("{0}", Helper.tranEnable(p, on)));
 		if(!on)
 			p.setMetadata("disable-notify",  new FixedMetadataValue(SuperHarvest.getInstance(), "disable"));
 		else 
@@ -80,9 +82,31 @@ public class PlayerManager {
 		boolean on = p.hasMetadata("enable-sneaking") ? p.getMetadata("enable-sneaking").get(0).asBoolean() :
 			c.defaultSneaking;
 		
-		p.sendMessage(!on ? c.sneakingMode : c.classicMode);
+		p.sendMessage(!on ? getLang(p).sneakingMode : getLang(p).classicMode);
 		p.setMetadata("enable-sneaking",  new FixedMetadataValue(SuperHarvest.getInstance(), !on));
 	}
+	
+	public static void setLang(Player p, String lang) {
+		if(lang.equals("default"))
+			p.removeMetadata("language", SuperHarvest.getInstance());
+		else
+			p.setMetadata("language", new FixedMetadataValue(SuperHarvest.getInstance(), lang));
+		p.sendMessage(getLang(p).toggleLang.replace("{0}", lang));		
+	}
+	
+	public static Lang getLang(Player p) {
+		return SuperHarvest.getSuperConfig().getLang(getLanguage(p));
+	}
+	
+	private static String getLanguage(Player p) {
+		if(p.hasMetadata("language"))
+			return p.getMetadata("language").stream().filter(m->m.getOwningPlugin().equals(SuperHarvest.getInstance())).findFirst().get().asString();
+		else if(SuperHarvest.getSuperConfig().autoLang)
+			return p.getLocale();
+		else
+			return Config.language;
+		}
+	
 	
 
 	

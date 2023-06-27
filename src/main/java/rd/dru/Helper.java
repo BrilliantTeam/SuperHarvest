@@ -7,11 +7,13 @@ import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+
 import rd.dru.PlayerManager.OptionType;
+import rd.dru.config.Config;
 
 public class Helper {
 
-	static Config c = SuperHarvest.getSuperConfig();
 	/**
 	 * 
 	 * @param center block
@@ -29,21 +31,21 @@ public class Helper {
 		return bs;
 	}
 	
-	public static String trans(OptionType type) {
+	public static String trans(Player p, OptionType type) {
 		switch (type) {
 		case Farming:
-			return c.farm;
+			return PlayerManager.getLang(p).farm;
 		case Logging:
-			return c.log;
+			return PlayerManager.getLang(p).log;
 		case Mining:
-			return c.mine;
+			return PlayerManager.getLang(p).mine;
 		default:
 			return "";
 		}
 	}
 	
-	public static String tranEnable(boolean enabled) {
-		return enabled ? c.enable : c.disable;
+	public static String tranEnable(Player p,boolean enabled) {
+		return enabled ? PlayerManager.getLang(p).enable : PlayerManager.getLang(p).disable;
 	}
 	
 	private final List<String> stones =  Arrays.asList("STONE","DEEPSLATE","NETHERRACK","COBBLED_DEEPSLATE","GRAVEL","BLACKSTONE","GRANITE",

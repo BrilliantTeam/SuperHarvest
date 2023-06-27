@@ -42,7 +42,7 @@ public class CropBreaks implements Workload{
 			if(canHarvest(b)) {
 				SuperHarvest.nms.crackCrop(b, b.getType());
 				SuperHarvest.nms.playSound(b, NSound.Farm);
-				if(SuperHarvest.nms.breakBlock(player, b)&&isHoe(SuperHarvest.nms.getItemInHand(player))) {
+				if(b.getWorld().equals(player.getWorld())&&SuperHarvest.nms.breakBlock(player, b)&&isHoe(SuperHarvest.nms.getItemInHand(player))) {
 					chains(b.getRelative(BlockFace.DOWN));
 				} else 
 					return cancel();
