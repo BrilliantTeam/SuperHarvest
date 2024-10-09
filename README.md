@@ -3,6 +3,9 @@
 
 Spigot: https://ref.gamer.com.tw/redir.php?url=https%3A%2F%2Fwww.spigotmc.org%2Fresources%2Fsuperharvest-animation-fully-configurable-open-source-1-8-1-19.103034%2F/<br>
 巴哈介紹: https://forum.gamer.com.tw/Co.php?bsn=18673&sn=1035290
+---
+
+[Made for 輝煌伺服器.](https://discord.gg/9c287zPpUZ)
 
 # 📃 License | 開源證書
 This project is under GPLv3.
