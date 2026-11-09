@@ -10,12 +10,11 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import rd.dru.PlayerManager.OptionType;
-import rd.dru.config.Config;
 
 public class Helper {
 
 	/**
-	 * 
+	 *
 	 * @param center block
 	 * @return near blocks, represent to 3*3*3-1 blocks
 	 */
@@ -31,6 +30,29 @@ public class Helper {
 		return bs;
 	}
 	
+	/**
+	 *
+	 * @param center block
+	 * @return near blocks, represent to 3*3*3-1 blocks
+	 */
+	public static Collection<Block> getNear(Block b, int extra) {
+		HashSet<Block> bs = new HashSet<>();
+		for(int x=-1-extra;x<=1+extra;x++)
+			for(int y=-1-extra;y<=1+extra;y++)
+				for(int z=-1-extra;z<=1+extra;z++) {
+					if(x==0&&y==0&&z==0)
+						continue;
+					bs.add(new Location(b.getWorld(), x+b.getX(), y+b.getY(), z+b.getZ()).getBlock());			
+				}
+		return bs;
+	}
+	
+	/**
+	 * 
+	 * @param p
+	 * @param type
+	 * @return
+	 */
 	public static String trans(Player p, OptionType type) {
 		switch (type) {
 		case Farming:

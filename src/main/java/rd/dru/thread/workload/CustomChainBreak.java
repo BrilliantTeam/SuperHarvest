@@ -6,15 +6,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import rd.dru.Helper;
 import rd.dru.SuperHarvest;
-import rd.dru.nms.NMSHandler.NSound;
 import rd.dru.thread.Workload;
 
 /**
@@ -72,4 +69,9 @@ public class CustomChainBreak implements Workload {
 		return item.getType().toString().contains("_PICKAXE");
 	}
 
+	@Override
+	public Player player() {
+		// TODO Auto-generated method stub
+		return player;
+	}
 }

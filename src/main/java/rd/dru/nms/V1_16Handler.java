@@ -2,19 +2,27 @@ package rd.dru.nms;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
+import rd.dru.PlayerManager;
+import rd.dru.PlayerManager.OptionType;
 import rd.dru.SuperHarvest;
-import rd.dru.nms.NMSHandler.NSound;
 
-public class V1_16Handler implements NMSHandler{
+public class V1_16Handler implements NMSHandler, Listener{
 	
 	@Override
 	public boolean breakBlock(Player p, Block b) {
@@ -99,4 +107,51 @@ public class V1_16Handler implements NMSHandler{
 	public void titleBarMes(Player p, String mes) {
 		p.sendTitle(" ", mes, 0, 20, 10);
 	}
+	
+	@Override
+	public void init(SuperHarvest sh) {
+		Bukkit.getPluginManager().registerEvents(this, sh);
+		Bukkit.getOnlinePlayers().forEach(p->onJoin(new PlayerJoinEvent(p, "player join")));
+	}
+	
+	@EventHandler
+	public void onLeave(PlayerQuitEvent e) {
+		Player p = e.getPlayer();
+		PersistentDataContainer data = p.getPersistentDataContainer();
+		data.set(new NamespacedKey(SuperHarvest.getInstance(), "Farming"), PersistentDataType.BYTE, convert(PlayerManager.isEnable(p, OptionType.Farming)));
+		data.set(new NamespacedKey(SuperHarvest.getInstance(), "Logging"), PersistentDataType.BYTE, convert(PlayerManager.isEnable(p, OptionType.Logging)));
+		data.set(new NamespacedKey(SuperHarvest.getInstance(), "Mining"), PersistentDataType.BYTE, convert(PlayerManager.isEnable(p, OptionType.Mining)));
+		data.set(new NamespacedKey(SuperHarvest.getInstance(), "Mode"), PersistentDataType.BYTE, convert(PlayerManager.isSneakingMode(p)));
+	}
+	
+	private byte convert(boolean bt) {
+		return (byte) (bt ? 1 : 0);
+	}
+	
+	@EventHandler
+	public void onJoin(PlayerJoinEvent e) {
+		Player p = e.getPlayer();
+		PersistentDataContainer data = p.getPersistentDataContainer();
+		if(data.has(new NamespacedKey(SuperHarvest.getInstance(), "Farming"),PersistentDataType.BYTE)) {
+			PlayerManager.set(p, OptionType.Farming, data.get(new NamespacedKey(SuperHarvest.getInstance(), "Farming"), PersistentDataType.BYTE)==1);
+			PlayerManager.set(p, OptionType.Logging, data.get(new NamespacedKey(SuperHarvest.getInstance(), "Logging"), PersistentDataType.BYTE)==1);
+			PlayerManager.set(p, OptionType.Mining, data.get(new NamespacedKey(SuperHarvest.getInstance(), "Mining"), PersistentDataType.BYTE)==1);
+
+			if(PlayerManager.isSneakingMode(p)!=(data.get(new NamespacedKey(SuperHarvest.getInstance(), "Mode"), PersistentDataType.BYTE)==1))
+				PlayerManager.toggleMode(p);
+		}
+	}
+
+	@Override
+	public void onDisable() {
+		Bukkit.getOnlinePlayers().forEach(p->{
+			onLeave(new PlayerQuitEvent(p, "player leave"));	
+		});
+	}
+	
+	
+		
+
+	
+	
 }

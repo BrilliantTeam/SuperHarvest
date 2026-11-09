@@ -26,18 +26,21 @@ public class SuperHarvest extends JavaPlugin{
 		inst = this;
 		config = new Config(new File("plugins/SuperHarvest/config.yml"));
 		nms = VersionChecker.getCurrentVersion().getNMS();
+		nms.init(this);
 		thread = new SafeThread(config.bufferMs);
 		thread.start();
 		new EventManager();
 		getCommand("superharvest").setExecutor(new Commands());
 		
-		int pluginId = 15675; // <-- Replace with the id of your plugin!
+		int pluginId = 15675;
         new Metrics(this, pluginId);
     	Bukkit.getLogger().info("SuperHarvest is enabled.");
 	}
 	
 	@Override
 	public void onDisable() {
+		thread.stop();
+		nms.onDisable();
 		Bukkit.getLogger().info("SuperHarvest is disabled.");
 	}
 	

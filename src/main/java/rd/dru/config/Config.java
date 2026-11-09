@@ -7,13 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 
 /**
  * 
@@ -26,7 +24,7 @@ public class Config {
 	List<String> disableWorlds;
 	List<Material> customBreaks;
 	public long bufferMs;
-	public boolean enableFarming,enableMining,enableLogging, actionBarNotify, titleBarNotify, defaultSneaking, autoLang;
+	public boolean enableFarming,enableMining,enableLogging, actionBarNotify, titleBarNotify, defaultSneaking,defaultOn, autoLang;
 //	public String toggle, toggleAll, farm, mine, log, enable, disable, about, perms, notify, notifyStatus,classicMode,sneakingMode;
 	
 	public static String language;
@@ -89,12 +87,14 @@ public class Config {
 		}
 		config = YamlConfiguration.loadConfiguration(f);
 		disableWorlds = config.getStringList("disable-worlds");
+		defaultOn = config.getBoolean("default-enable",true);
 		enableFarming = config.getBoolean("enable-farming",true);
 		enableMining = config.getBoolean("enable-mining",true);
 		enableLogging = config.getBoolean("enable-logging",true);
 		actionBarNotify = config.getBoolean("notify-actionbar", true);
 		titleBarNotify = config.getBoolean("notify-titlebar", false);
 		defaultSneaking = config.getBoolean("default-sneaking-mode", false);
+		
 		bufferMs = config.getLong("cpu-mileseconds-limitation", 3);
 
 		language = config.getString("default-language","en_us");
@@ -106,6 +106,7 @@ public class Config {
 	public void save() {
 		try {
 			config.set("disable-worlds", disableWorlds);
+			config.set("default-enable", defaultOn);
 			config.set("enable-farming",enableFarming);
 			config.set("enable-mining", enableMining);
 			config.set("enable-logging", enableLogging);

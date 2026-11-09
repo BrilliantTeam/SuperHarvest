@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -29,6 +30,9 @@ public class CropBreaks implements Workload{
 	
 	public CropBreaks(Player player, Block loc) {
 		this.player = player;
+//		Block farm = loc.getRelative(BlockFace.DOWN);
+		lands.add(loc);
+		going.add(loc);
 		chains(loc);
 	}
 	
@@ -37,13 +41,13 @@ public class CropBreaks implements Workload{
 		if(!player.isOnline()||player==null||going.isEmpty())
 			return true;
 			
-			Block b = going.poll().getRelative(BlockFace.UP);
+			Block b = going.poll();
 		
 			if(canHarvest(b)) {
 				SuperHarvest.nms.crackCrop(b, b.getType());
 				SuperHarvest.nms.playSound(b, NSound.Farm);
 				if(b.getWorld().equals(player.getWorld())&&SuperHarvest.nms.breakBlock(player, b)&&isHoe(SuperHarvest.nms.getItemInHand(player))) {
-					chains(b.getRelative(BlockFace.DOWN));
+					chains(b);	
 				} else 
 					return cancel();
 			
@@ -52,32 +56,38 @@ public class CropBreaks implements Workload{
 	}
 	
 	private boolean cancel() {
-		SuperHarvest.thread.cach.removeAll(going);
+		SuperHarvest.thread.cach.removeAll(going.stream().map(bb->bb).collect(Collectors.toSet()));
 		return true;
 	}
 	
 	private void chains(Block b) {
 		SuperHarvest.thread.cach.remove(b);
-		List<Block> sels = Helper.getNear(b).stream().filter(w->{
-			if(SuperHarvest.nms.isFarmLnad(w)&&!lands.contains(w)) {
-				lands.add(w);
-				if(lands.size()<64)
-					return true;
-				
-			}
-			return false;
-		}).collect(Collectors.toList());
+		List<Block> sels = Helper.getNear(b).stream().map(w->{
+			if(SuperHarvest.nms.isFarmLnad(w)) {
+				return w.getRelative(BlockFace.UP);
+			} else 
+				return w;
+		}).filter(w->SuperHarvest.nms.isCrop(w)&&!lands.contains(w)&&!going.contains(w)&&!w.getType().equals(Material.SUGAR_CANE)||
+				(w.getType().equals(Material.SUGAR_CANE)&&w.getY()==b.getY()&&!going.contains(w)))
+				.collect(Collectors.toList());
 		going.addAll(sels);
+		lands.addAll(sels);
 		SuperHarvest.thread.cach.addAll(sels);
-		
+	
 	}
 	
 	private boolean canHarvest(Block b) {
-		return SuperHarvest.nms.canCropHarvest(b);
+		return SuperHarvest.nms.canCropHarvest(b)||b.getType().equals(Material.SUGAR_CANE);
 	}
 	
 	private boolean isHoe(ItemStack item) {
 		return item.getType().toString().contains("_HOE");
+	}
+
+	@Override
+	public Player player() {
+		// TODO Auto-generated method stub
+		return player;
 	}
 	
 }

@@ -5,6 +5,8 @@ import java.util.Comparator;
 
 import org.bukkit.Bukkit;
 
+import rd.dru.nms.VersionChecker.Version;
+
 public class VersionChecker {
 	public enum Version {
 		v1_8(8, new V1_8Handler()),
@@ -70,6 +72,8 @@ public class VersionChecker {
 		if(current!=null)
 			return current;
 		String a = Bukkit.getServer().getClass().getPackage().getName();
+		if(!a.contains("_"))
+			return Version.v1_17;
 		String version = a.substring(a.lastIndexOf('.') + 1,a.lastIndexOf("_"));
 		return current = Version.getSupportVerison(Integer.parseInt(version.substring(version.indexOf("_")+1)));
 	}

@@ -1,9 +1,11 @@
 name: SuperHarvest
 main: rd.dru.SuperHarvest
-version: 1.4
+version: 1.8
 description: "break ores, trees, farms break fast and instanly!"
 author: Dru_TNT
+folia-supported: true
 api-version: 1.13
+softdepend: [PlaceholderAPI]
 commands:
   superharvest:
     description: "superharvest management command"

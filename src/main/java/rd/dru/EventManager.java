@@ -8,7 +8,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
@@ -33,7 +32,7 @@ public class EventManager implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onSneaking(PlayerToggleSneakEvent e) {
-		if(e.isSneaking()&&PlayerManager.isSneakingMode(e.getPlayer()))
+		if(e.isSneaking()&&PlayerManager.isSneakingMode(e.getPlayer())&&SuperHarvest.getSuperConfig().isVaildWorld(e.getPlayer().getWorld()))
 			notify(e.getPlayer());
 	}
 	
@@ -43,7 +42,7 @@ public class EventManager implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onItemHeld(PlayerItemHeldEvent e) {
-		if(!PlayerManager.isSneakingMode(e.getPlayer()))
+		if(!PlayerManager.isSneakingMode(e.getPlayer())&&SuperHarvest.getSuperConfig().isVaildWorld(e.getPlayer().getWorld()))
 			notify(e.getPlayer(), e.getNewSlot());
 	}
 	private boolean notify(Player p) {
@@ -90,7 +89,7 @@ public class EventManager implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onBlockBreak(BlockBreakEvent e) {
-		if(e.isCancelled())
+		if(e.isCancelled()||!SuperHarvest.getSuperConfig().isVaildWorld(e.getBlock().getWorld()))
 			return;
 		if(SuperHarvest.thread.cach.contains(e.getBlock())||(PlayerManager.isSneakingMode(e.getPlayer())&&!e.getPlayer().isSneaking())) {
 			SuperHarvest.thread.cach.remove(e.getBlock());

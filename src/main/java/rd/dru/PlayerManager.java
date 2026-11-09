@@ -28,11 +28,22 @@ public class PlayerManager {
 	 */
 	public static boolean isEnable(Player p,OptionType type) {
 //		return true;
-		return !p.hasMetadata("disable-"+type.toString())&&p.hasPermission("superharvest."+type.toString().toLowerCase());
+		return !hasOffMeta(p,type)&&p.hasPermission("superharvest."+type.toString().toLowerCase());
+	}
+	
+	public static boolean hasOffMeta(Player p, OptionType type) {
+		return p.hasMetadata("disable-"+type.toString())==SuperHarvest.getSuperConfig().defaultOn;
+	}
+	public static void setOnMeta(Player p,OptionType type, boolean on) {
+		if(on==SuperHarvest.getSuperConfig().defaultOn) {
+			p.removeMetadata("disable-"+type.toString(), SuperHarvest.getInstance());
+		} else {
+			p.setMetadata("disable-"+type.toString(), new FixedMetadataValue(SuperHarvest.getInstance(), "disable"));
+		}
 	}
 	
 	public static boolean isSneakingMode(Player p) {
-		return p.hasMetadata("enable-sneaking") ? p.getMetadata("enable-sneaking").get(0).asBoolean() :
+		return p.hasMetadata("enable-sneaking")&&!p.getMetadata("enable-sneaking").isEmpty()? p.getMetadata("enable-sneaking").get(0).asBoolean() :
 			SuperHarvest.getSuperConfig().defaultSneaking;
 	}
 	
@@ -41,7 +52,7 @@ public class PlayerManager {
 	}
 	
 	public static boolean toggle(Player p) {
-		boolean on = p.hasMetadata("disable-"+OptionType.Farming);
+		boolean on = hasOffMeta(p, OptionType.Farming);
 		p.sendMessage(""+ChatColor.GREEN+getLang(p).toggleAll.replace("{0}", Helper.tranEnable(p, on)));
 		
 		
@@ -53,14 +64,15 @@ public class PlayerManager {
 	}
 	
 	public static void set(Player p, OptionType type, boolean on) {
-		if(!on)
-			p.setMetadata("disable-"+type.toString(), new FixedMetadataValue(SuperHarvest.getInstance(), "disable"));
-		else 
-			p.removeMetadata("disable-"+type.toString(), SuperHarvest.getInstance());
+		setOnMeta(p, type, on);
+//		if(!on)
+//			p.setMetadata("disable-"+type.toString(), new FixedMetadataValue(SuperHarvest.getInstance(), "disable"));
+//		else 
+//			p.removeMetadata("disable-"+type.toString(), SuperHarvest.getInstance());
 	}
 	
 	public static boolean toggle(Player p, OptionType type) {
-		boolean on = p.hasMetadata("disable-"+type.toString());
+		boolean on = hasOffMeta(p, type);
 		p.sendMessage(""+ChatColor.GREEN+getLang(p).toggle.replace("{1}", Helper.tranEnable(p, on)).replace("{0}", Helper.trans(p, type)));
 
 		set(p, type, on);

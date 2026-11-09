@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -75,4 +73,9 @@ public class OreBreaks implements Workload {
 		return item.getType().toString().contains("_PICKAXE");
 	}
 
+	@Override
+	public Player player() {
+		// TODO Auto-generated method stub
+		return player;
+	}
 }

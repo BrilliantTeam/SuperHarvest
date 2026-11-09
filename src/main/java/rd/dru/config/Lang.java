@@ -81,7 +81,7 @@ public class Lang {
 			notify = Config.color(config.getString("notify", "§eFast {0} is now on"));
 			notifyStatus = Config.color(config.getString("toggleNotify", "§7Status notify is now {0}!"));
 			perms = Config.color(config.getString("permission","&cYou don't have enough permission to execute this command."));
-			toggle = Config.color(config.getString("toggle", "§eFast {0} §ris now {1}"));
+			toggle = Config.color(config.getString("toggle", "§eFast {0} §7is now {1}"));
 			toggleAll = Config.color(config.getString("toggleall", "§7SuperHarvest is now {0}"));
 			toggleLang = Config.color(config.getString("togglelang", "§7The language is now {0}"));
 			farm = Config.color(config.getString("farming", "§efarming§r"));

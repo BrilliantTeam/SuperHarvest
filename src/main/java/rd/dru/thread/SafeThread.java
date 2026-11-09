@@ -4,10 +4,13 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashSet;
+import java.util.concurrent.TimeUnit;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
+import org.bukkit.scheduler.BukkitTask;
 
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import rd.dru.SuperHarvest;
 
 
@@ -22,6 +25,15 @@ public class SafeThread implements Runnable{
 	public HashSet<Block> cach = new HashSet<>();
 	long limit = 3l;
 	
+	private final boolean isFolia = isFolia();
+	private boolean isFolia() {
+	    try {
+	        Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
+	        return true;
+	    } catch (ClassNotFoundException e) {
+	        return false;
+	    }
+	}
 	public SafeThread(long limit) {
 		// TODO Auto-generated constructor stub
 		this.limit = limit;
@@ -40,21 +52,61 @@ public class SafeThread implements Runnable{
 		ArrayList<Workload> rego = new ArrayList<>();
 		while(!queue.isEmpty()&&System.currentTimeMillis()<reach) {
 			Workload work = queue.poll();
-			if(!work.compute())
-				rego.add(work);
+			if(work==null)
+				continue;
+			if(isFolia) 
+				work.player().getScheduler().run(SuperHarvest.getInstance(), t->{
+					if(!work.compute()) 
+						queue.add(work);
+				}, new Runnable() {
+					@Override
+					public void run() {
+						work.compute();
+					}
+				});
+			else
+				if(!work.compute())
+					rego.add(work);		
+			
 		}
 		queue.addAll(rego);
 	
 	}
 	
-	int taskID = -1;
+	Task task;
+	
 	public void start() {
-		taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(SuperHarvest.getInstance(), this, 1, 1);
+		if(!isFolia)
+			task = new Task(Bukkit.getScheduler().runTaskTimer(SuperHarvest.getInstance(), this, 1, 1));
+		else
+			task = new Task(Bukkit.getAsyncScheduler().runAtFixedRate(SuperHarvest.getInstance(), t->run(),50l,50l,TimeUnit.MILLISECONDS));
 	}
 	
 	public void stop() {
-		if(taskID>0)
-			Bukkit.getScheduler().cancelTask(taskID);
+		if(task!=null)
+			task.cancel();
 	}
-	
+
+	//thx to youtube: Matej
+	//link: https://youtu.be/JwSqUnncVk8?si=G1vHUGjkgQ4G_2Nn&t=148
+	public static class Task {
+		private Object foliaTask;
+		private BukkitTask bukkitTask;
+		
+		Task(Object foliaTask) {
+			this.foliaTask = foliaTask;
+		}
+		
+		Task(BukkitTask foliaTask) {
+			this.bukkitTask = foliaTask;
+		}
+		
+		public void cancel() {
+//			if(bukkitTask!=null)
+//				bukkitTask.cancel();
+//			else 
+			if(foliaTask!=null)
+				((ScheduledTask) foliaTask).cancel();
+		}
+	}
 }

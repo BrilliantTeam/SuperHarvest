@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
 import rd.dru.Helper;
@@ -56,7 +57,10 @@ public class TreeBreaks implements Workload {
 				return cancel();
 		} else for(int i=0;!leaves.isEmpty()&&i<6;i++) {
 			b = leaves.poll();
-			b.breakNaturally();
+			BlockBreakEvent event = new BlockBreakEvent(b, player);
+			Bukkit.getPluginManager().callEvent(event);
+			if(!event.isCancelled())
+				b.breakNaturally();
 			chainsLeave(b);
 		}
 		return going.isEmpty()&&leaves.isEmpty();
@@ -66,6 +70,7 @@ public class TreeBreaks implements Workload {
 	private void chainsLeave(Block b) {
 		cl++;
 		if(cl>64) return;
+
 		leaves.addAll(Helper.getNear(b).stream().filter(nb->isLeaves(nb)&&!leaves.contains(nb)).collect(Collectors.toList()));
 	}
 	
@@ -93,5 +98,11 @@ public class TreeBreaks implements Workload {
 	
 	private static boolean isAxe(ItemStack item) {
 		return item.getType().toString().contains("_AXE");
+	}
+	
+	@Override
+	public Player player() {
+		// TODO Auto-generated method stub
+		return player;
 	}
 }

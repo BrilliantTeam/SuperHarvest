@@ -2,7 +2,6 @@ package rd.dru.nms;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ExperienceOrb;
@@ -10,6 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+
+import rd.dru.SuperHarvest;
 
 
 public interface NMSHandler {
@@ -23,7 +24,9 @@ public interface NMSHandler {
 	public static NMSHandler getNMSHandler() {
 		return VersionChecker.getCurrentVersion().getNMS();
 	}
-	
+
+	public default void init(SuperHarvest sh) {}
+	public default void onDisable() {}
 	public default boolean breakBlock(Player p,Block b) {
 		BlockBreakEvent event = new BlockBreakEvent(b, p);
 //		net.minecraft.server.v1_8_R3.Block;
@@ -33,7 +36,7 @@ public interface NMSHandler {
 		if(!event.isCancelled()) {
 			ItemStack hand = p.getItemInHand();
 			hand.setDurability((short) (hand.getDurability()+(short)1));
-			if(hand.getDurability()>=hand.getType().getMaxDurability())
+			if(hand.getDurability()>=hand.getType().getMaxDurability()&&!hand.getItemMeta().isUnbreakable())
 				return false;
 			b.breakNaturally(hand);
 			if(event.getExpToDrop()>0) {
@@ -62,6 +65,6 @@ public interface NMSHandler {
 	public boolean isCrop(Block b);
 	public void actionBarMes(Player p, String mes);
 	public void titleBarMes(Player p, String mes);
-	
+
 
 }
