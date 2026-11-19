@@ -4,6 +4,8 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import org.bukkit.Bukkit;
@@ -22,7 +24,7 @@ import rd.dru.SuperHarvest;
 public class SafeThread implements Runnable{
 
 	Deque<Workload> queue = new ArrayDeque<>();
-	public HashSet<Block> cach = new HashSet<>();
+	public Set<Block> cach = ConcurrentHashMap.newKeySet();
 	long limit = 3l;
 	
 	private final boolean isFolia = isFolia();
@@ -102,9 +104,8 @@ public class SafeThread implements Runnable{
 		}
 		
 		public void cancel() {
-//			if(bukkitTask!=null)
-//				bukkitTask.cancel();
-//			else 
+			if(bukkitTask!=null)
+				bukkitTask.cancel();
 			if(foliaTask!=null)
 				((ScheduledTask) foliaTask).cancel();
 		}

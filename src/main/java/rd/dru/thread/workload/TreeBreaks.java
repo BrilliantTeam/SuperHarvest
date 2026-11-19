@@ -48,6 +48,8 @@ public class TreeBreaks implements Workload {
 		Block b;
 		if(!going.isEmpty()) {
 			b = going.poll();
+			if(!owns(b))
+				return cancel();
 			Material t = b.getType();
 			if(type.contains(t)&&b.getWorld().equals(player.getWorld())&&SuperHarvest.nms.breakBlock(player, b)&&isAxe(player.getItemInHand())) {
 				chains(b);
@@ -57,6 +59,8 @@ public class TreeBreaks implements Workload {
 				return cancel();
 		} else for(int i=0;!leaves.isEmpty()&&i<6;i++) {
 			b = leaves.poll();
+			if(!owns(b))
+				return cancel();
 			BlockBreakEvent event = new BlockBreakEvent(b, player);
 			Bukkit.getPluginManager().callEvent(event);
 			if(!event.isCancelled())

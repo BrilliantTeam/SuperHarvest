@@ -39,6 +39,8 @@ public class CustomChainBreak implements Workload {
 			return cancel();
 			
 			Block b = going.poll();
+			if(!owns(b))
+				return cancel();
 //			if(b.getType().equals(type)&&SuperHarvest.nms.breakBlock(player, b)&&isPickaxe()) {
 //				chains(b);
 //				SuperHarvest.nms.playSound(b, type);
