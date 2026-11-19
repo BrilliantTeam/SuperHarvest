@@ -42,6 +42,8 @@ public class CropBreaks implements Workload{
 			return true;
 			
 			Block b = going.poll();
+			if(!owns(b))
+				return cancel();
 		
 			if(canHarvest(b)) {
 				SuperHarvest.nms.crackCrop(b, b.getType());

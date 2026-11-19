@@ -40,6 +40,8 @@ public class OreBreaks implements Workload {
 			return cancel();
 		
 			Block b = going.poll();
+			if(!owns(b))
+				return cancel();
 			if(b.getType().equals(type)&&b.getWorld().equals(player.getWorld())&&SuperHarvest.nms.breakBlock(player, b)&&isPickaxe(SuperHarvest.nms.getItemInHand(player))) {
 				chains(b);
 				SuperHarvest.nms.playSound(b, NSound.Ore);
